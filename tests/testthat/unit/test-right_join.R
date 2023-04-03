@@ -155,15 +155,18 @@ test_that("Eager right_join works.", {
 })
 
 test_that("right_join can delegate to data.frame method when necessary.", {
-    .expr <- rlang::expr((function() {
-        local_rhs <- data.table::as.data.table(!!rhs)
-        right_join(data.table::as.data.table(!!lhs), local_rhs, by = "x")
-    })())
+    .enclos <- rlang::env(asNamespace("rex"),
+                          lhs = data.table::copy(lhs),
+                          rhs = data.table::copy(rhs))
 
-    expect_warning(ans <- eval(.expr, envir = asNamespace("rex")), "table.express")
+    .fn <- rlang::set_env(new_env = .enclos, function() {
+        right_join(lhs, rhs, by = "x")
+    })
+
+    expect_warning(ans <- .fn(), "table.express")
     expect_equal(ans, dplyr:::right_join.data.frame(lhs, rhs, "x"))
 
-    .expr <- rlang::expr(right_join(data.table::as.data.table(!!lhs), data.table::as.data.table(!!rhs), x))
+    .expr <- substitute(right_join(data.table::as.data.table(lhs), data.table::as.data.table(rhs), x), .enclos)
     ans_from_workaround <- eval(.expr, envir = asNamespace("rex"))
     expect_equal(ans_from_workaround, right_join(lhs, rhs, x))
 })
@@ -171,4 +174,37 @@ test_that("right_join can delegate to data.frame method when necessary.", {
 test_that("right_join works when which=TRUE.", {
     expect_identical(right_join(lhs, rhs, x, which = TRUE),
                      c(7:9, 1:3))
+})
+
+test_that("right_join can use .selecting and .framing.", {
+    expected <- rhs[lhs, .(foo), on = "x", by = .EACHI]
+    ans <- right_join(rhs, lhs, x, .selecting = foo, .framing = list(by = .EACHI))
+    expect_identical(ans, expected)
+
+    expected <- rhs[lhs, .(foo, i_v = i.v), on = "x", by = .EACHI]
+
+    ans <- right_join(rhs, lhs, x, .selecting = .(foo, i_v = i.v), .framing = list(by = .EACHI))
+    expect_identical(ans, expected)
+
+    ans <- right_join(rhs, lhs, x, .framing = list(by = .EACHI), .selecting = {
+        list(foo = foo, i_v = i.v)
+    })
+    expect_identical(ans, expected)
+})
+
+test_that("right_join has limited support for dplyr syntax.", {
+    expected <- rhs[lhs, on = "x"]
+
+    ans <- right_join(rhs, lhs, by = "x")
+    expect_identical(ans, expected)
+
+    ans <- right_join(rhs, lhs, by = c("x"))
+    expect_identical(ans, expected)
+
+    ans <- right_join(rhs, lhs, c("x"))
+    expect_identical(ans, expected)
+
+    by <- "x"
+    ans <- right_join(rhs, lhs, by = c(by))
+    expect_identical(ans, expected)
 })

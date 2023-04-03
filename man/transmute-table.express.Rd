@@ -7,12 +7,16 @@
 \alias{transmute.data.table}
 \title{Compute new columns}
 \usage{
-\method{transmute}{ExprBuilder}(.data, ..., .enlist = TRUE,
+\method{transmute}{ExprBuilder}(
+  .data,
+  ...,
+  .enlist = TRUE,
+  .sequential = FALSE,
   .parse = getOption("table.express.parse", FALSE),
-  .chain = getOption("table.express.chain", TRUE))
+  .chain = getOption("table.express.chain", TRUE)
+)
 
-\method{transmute}{EagerExprBuilder}(.data, ...,
-  .parent_env = rlang::caller_env())
+\method{transmute}{EagerExprBuilder}(.data, ..., .parent_env = rlang::caller_env())
 
 \method{transmute}{data.table}(.data, ...)
 }
@@ -22,6 +26,8 @@
 \item{...}{Clauses for transmuting columns. For \code{j} inside the \code{data.table}'s frame.}
 
 \item{.enlist}{See details.}
+
+\item{.sequential}{If \code{TRUE}, each expression in \code{...} is assigned to a nested body within curly braces to allow them to use variables created by previous expressions. The default is \code{FALSE} because enabling this may turn off some \link[data.table:datatable-optimize]{data.table optimizations}.}
 
 \item{.parse}{Logical. Whether to apply \code{\link[rlang:parse_expr]{rlang::parse_expr()}} to obtain the expressions.}
 

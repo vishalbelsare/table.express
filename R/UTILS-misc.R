@@ -27,10 +27,7 @@ parse_dots <- function(.parse = FALSE, ..., .named = FALSE, .ignore_empty = "tra
 #' @importFrom rlang is_missing
 #'
 reduce_expr <- function(expressions, init, op, ..., .parse = FALSE) {
-    # lengths() function was introduced in R 3.2.0
-    lengths <- sapply(expressions, length)
-
-    if (identical(lengths, 1L) && rlang::is_missing(expressions[[1L]][[1L]])) {
+    if (identical(lengths(expressions), 1L) && rlang::is_missing(expressions[[1L]][[1L]])) {
         init
     }
     else {
@@ -120,7 +117,8 @@ process_sdcols <- function(.data, .sdcols_quo) {
 #' @importFrom tidyselect vars_select_helpers
 #'
 is_tidyselect_call <- function(expression) {
-    rlang::is_call(expression, names(tidyselect::vars_select_helpers))
+    rlang::is_call(expression, names(tidyselect::vars_select_helpers)) ||
+        rlang::is_call(expression, names(tidyselect::vars_select_helpers), ns = "tidyselect")
 }
 
 #' @importFrom rlang as_label
@@ -227,7 +225,6 @@ standardize_lapplys <- function(.exprs, ..., .parse) {
 #' @importFrom rlang call2
 #' @importFrom rlang call_args
 #' @importFrom rlang call_modify
-#' @importFrom rlang call_standardise
 #' @importFrom rlang expr
 #' @importFrom rlang is_call
 #' @importFrom rlang is_formula
@@ -250,7 +247,6 @@ standardize_calls <- function(.exprs, .env, ..., .parse) {
         }
 
         if (!rlang::is_formula(.expr) && rlang::is_call(.expr)) {
-            .expr <- rlang::call_standardise(.expr, .env)
             .expr <- rlang::call_modify(.expr, ... = rlang::zap(), !!!.dots)
         }
 
@@ -318,11 +314,76 @@ try_delegate <- function(.fun_, .expr, .generic_env = rlang::caller_env()) {
         table.express.data_table_unaware_error = function(err) {
             if (isTRUE(getOption("table.express.warn.cedta", TRUE))) {
                 rlang::warn(paste(err$message,
-                                  "Trying to dispatch to data.frame method.",
-                                  "Use options(table.express.warn.cedta = FALSE) to avoid this warning."))
+                                  "Trying to dispatch to data.frame method (allowing copies).",
+                                  "Use options(table.express.warn.cedta = FALSE) to avoid this warning",
+                                  "and check the package documentation for more information."))
             }
 
             do.call(NextMethod, list(.fun_), envir = .generic_env)
         }
     )
+}
+
+#' @importFrom rlang warn
+#'
+get_named_clauses <- function(clauses) {
+    clause_names <- names(clauses)
+
+    named_clauses <- nzchar(clause_names)
+    if (any(!named_clauses)) {
+        rlang::warn("Some expressions in '...' are missing '=' (i.e. a left-hand side), ignoring them.")
+        clauses <- clauses[named_clauses]
+        clause_names <- names(clauses)
+    }
+
+    list(clause_names = clause_names, clauses = clauses)
+}
+
+# This function assumes clauses only has named elements.
+#
+#' @importFrom rlang call2
+#' @importFrom rlang expr
+#' @importFrom rlang sym
+#'
+body_from_clauses <- function(clauses, named_list = TRUE) {
+    clause_names <- names(clauses)
+    clause_names_symbols <- lapply(clause_names, rlang::sym)
+
+    body_expressions <- Map(clause_names_symbols, clauses, f = function(name_symbol, clause) {
+        rlang::expr(`=`(!!name_symbol, !!clause))
+    })
+
+    if (named_list) {
+        names(clause_names_symbols) <- clause_names
+    }
+
+    list_call <- rlang::call2("list", !!!clause_names_symbols)
+
+    as.call(c(
+        list(rlang::expr(`{`)),
+        body_expressions,
+        list_call
+    ))
+}
+
+#' @importFrom rlang call_args
+#' @importFrom rlang is_call
+#' @importFrom rlang is_missing
+#' @importFrom rlang maybe_missing
+#'
+extract_expressions <- function(.expr, unlist = TRUE) {
+    if (rlang::is_missing(.expr) || rlang::is_call(.expr, "{")) {
+        rlang::maybe_missing(.expr)
+    }
+    else if (rlang::is_call(.expr, ".") || rlang::is_call(.expr, "list")) {
+        if (unlist) {
+            rlang::call_args(.expr)
+        }
+        else {
+            .expr
+        }
+    }
+    else {
+        .expr
+    }
 }

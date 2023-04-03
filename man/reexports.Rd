@@ -2,9 +2,9 @@
 % Please edit documentation in R/UTILS-tidyselect.R, R/VERBS-anti_join.R,
 %   R/VERBS-arrange.R, R/VERBS-distinct.R, R/VERBS-filter.R,
 %   R/VERBS-full_join.R, R/VERBS-group_by.R, R/VERBS-inner_join.R,
-%   R/VERBS-left_join.R, R/VERBS-mutate.R, R/VERBS-right_join.R,
+%   R/VERBS-left_join.R, R/pkg.R, R/VERBS-mutate.R, R/VERBS-right_join.R,
 %   R/VERBS-select.R, R/VERBS-semi_join.R, R/VERBS-summarize.R,
-%   R/VERBS-transmute.R, R/pkg.R
+%   R/VERBS-transmute.R
 \docType{import}
 \name{reexports}
 \alias{reexports}
@@ -24,6 +24,11 @@
 \alias{group_by}
 \alias{inner_join}
 \alias{left_join}
+\alias{:=}
+\alias{\%>\%}
+\alias{\%T>\%}
+\alias{!!}
+\alias{!!!}
 \alias{mutate}
 \alias{right_join}
 \alias{select}
@@ -31,11 +36,6 @@
 \alias{summarize}
 \alias{summarise}
 \alias{transmute}
-\alias{:=}
-\alias{\%>\%}
-\alias{\%T>\%}
-\alias{!!}
-\alias{!!!}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -43,14 +43,14 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{data.table}{\code{\link[data.table]{:=}}}
+  \item{data.table}{\code{\link[data.table:assign]{:=}}}
 
-  \item{dplyr}{\code{\link[dplyr]{anti_join}}, \code{\link[dplyr]{arrange}}, \code{\link[dplyr]{distinct}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{full_join}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr]{inner_join}}, \code{\link[dplyr]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{right_join}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{semi_join}}, \code{\link[dplyr]{summarize}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr]{transmute}}}
+  \item{dplyr}{\code{\link[dplyr:filter-joins]{anti_join}}, \code{\link[dplyr]{arrange}}, \code{\link[dplyr]{distinct}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr:mutate-joins]{full_join}}, \code{\link[dplyr]{group_by}}, \code{\link[dplyr:mutate-joins]{inner_join}}, \code{\link[dplyr:mutate-joins]{left_join}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr:mutate-joins]{right_join}}, \code{\link[dplyr]{select}}, \code{\link[dplyr:filter-joins]{semi_join}}, \code{\link[dplyr]{summarise}}, \code{\link[dplyr:summarise]{summarize}}, \code{\link[dplyr]{transmute}}}
 
-  \item{magrittr}{\code{\link[magrittr]{\%>\%}}, \code{\link[magrittr]{\%T>\%}}}
+  \item{magrittr}{\code{\link[magrittr:pipe]{\%>\%}}, \code{\link[magrittr:tee]{\%T>\%}}}
 
-  \item{rlang}{\code{\link[rlang]{!!}}, \code{\link[rlang]{!!!}}}
+  \item{rlang}{\code{\link[rlang:injection-operator]{!!}}, \code{\link[rlang:splice-operator]{!!!}}}
 
-  \item{tidyselect}{\code{\link[tidyselect]{starts_with}}, \code{\link[tidyselect]{ends_with}}, \code{\link[tidyselect]{contains}}, \code{\link[tidyselect]{matches}}, \code{\link[tidyselect]{num_range}}, \code{\link[tidyselect]{one_of}}, \code{\link[tidyselect]{everything}}, \code{\link[tidyselect]{last_col}}}
+  \item{tidyselect}{\code{\link[tidyselect:starts_with]{contains}}, \code{\link[tidyselect:starts_with]{ends_with}}, \code{\link[tidyselect]{everything}}, \code{\link[tidyselect:everything]{last_col}}, \code{\link[tidyselect:starts_with]{matches}}, \code{\link[tidyselect:starts_with]{num_range}}, \code{\link[tidyselect]{one_of}}, \code{\link[tidyselect]{starts_with}}}
 }}
 

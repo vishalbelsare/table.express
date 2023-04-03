@@ -4,11 +4,102 @@
 \name{EagerExprBuilder}
 \alias{EagerExprBuilder}
 \title{Eager frame expression builder}
-\format{An object of class \code{R6ClassGenerator} of length 24.}
-\usage{
-EagerExprBuilder
-}
 \description{
 Like \link{ExprBuilder}, but eager in some regards. This shouldn't be used directly.
 }
-\keyword{datasets}
+\section{Super class}{
+\code{\link[table.express:ExprBuilder]{table.express::ExprBuilder}} -> \code{EagerExprBuilder}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-EagerExprBuilder-new}{\code{EagerExprBuilder$new()}}
+\item \href{#method-EagerExprBuilder-chain}{\code{EagerExprBuilder$chain()}}
+\item \href{#method-EagerExprBuilder-chain_if_set}{\code{EagerExprBuilder$chain_if_set()}}
+\item \href{#method-EagerExprBuilder-clone}{\code{EagerExprBuilder$clone()}}
+}
+}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="table.express" data-topic="ExprBuilder" data-id="eval"><a href='../../table.express/html/ExprBuilder.html#method-ExprBuilder-eval'><code>table.express::ExprBuilder$eval()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="table.express" data-topic="ExprBuilder" data-id="print"><a href='../../table.express/html/ExprBuilder.html#method-ExprBuilder-print'><code>table.express::ExprBuilder$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="table.express" data-topic="ExprBuilder" data-id="seek_and_nestroy"><a href='../../table.express/html/ExprBuilder.html#method-ExprBuilder-seek_and_nestroy'><code>table.express::ExprBuilder$seek_and_nestroy()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="table.express" data-topic="ExprBuilder" data-id="set_by"><a href='../../table.express/html/ExprBuilder.html#method-ExprBuilder-set_by'><code>table.express::ExprBuilder$set_by()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="table.express" data-topic="ExprBuilder" data-id="set_i"><a href='../../table.express/html/ExprBuilder.html#method-ExprBuilder-set_i'><code>table.express::ExprBuilder$set_i()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="table.express" data-topic="ExprBuilder" data-id="set_j"><a href='../../table.express/html/ExprBuilder.html#method-ExprBuilder-set_j'><code>table.express::ExprBuilder$set_j()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="table.express" data-topic="ExprBuilder" data-id="tidy_select"><a href='../../table.express/html/ExprBuilder.html#method-ExprBuilder-tidy_select'><code>table.express::ExprBuilder$tidy_select()</code></a></span></li>
+</ul>
+</details>
+}}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-EagerExprBuilder-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EagerExprBuilder-new}{}}}
+\subsection{Method \code{new()}}{
+Constructor.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EagerExprBuilder$new(DT, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{DT}}{A \link[data.table:data.table-class]{data.table::data.table}.}
+
+\item{\code{...}}{Ignored.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-EagerExprBuilder-chain"></a>}}
+\if{latex}{\out{\hypertarget{method-EagerExprBuilder-chain}{}}}
+\subsection{Method \code{chain()}}{
+Override to abort if chaining is attempted.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EagerExprBuilder$chain(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Ignored.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-EagerExprBuilder-chain_if_set"></a>}}
+\if{latex}{\out{\hypertarget{method-EagerExprBuilder-chain_if_set}{}}}
+\subsection{Method \code{chain_if_set()}}{
+Override to abort if chaining is attempted.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EagerExprBuilder$chain_if_set(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Ignored.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-EagerExprBuilder-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EagerExprBuilder-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EagerExprBuilder$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
